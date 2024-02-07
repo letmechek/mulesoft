@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="covid" format="json">
+      <types:shape format="weave" example="examples/emp-hr-employee.json"><![CDATA[%dw 2.0
+
+type covid = {|
+  empID: Number {"typeId": "int"}, 
+  empName: String, 
+  empAddress: {|
+    houseNumber: String, 
+    streetName: String, 
+    city: String, 
+    country: String
+  |}, 
+  empJoinDate: String
+|} {"example": "{\\\"empID\\\":898909,\\\"empName\\\":\\\"Mark\\\",\\\"empAddress\\\":{\\\"houseNumber\\\":\\\"2-1-8987-1\\\",\\\"streetName\\\":\\\"Central Avenue\\\",\\\"city\\\":\\\"New York\\\",\\\"country\\\":\\\"USA\\\"},\\\"empJoinDate\\\":\\\"2020-06-08 08:43:12\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="xmlemployee" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#f49d61a6-618c-4025-9bc8-b15bfc7acfea">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="covid"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

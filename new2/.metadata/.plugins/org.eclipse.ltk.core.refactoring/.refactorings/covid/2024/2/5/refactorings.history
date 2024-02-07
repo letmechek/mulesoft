@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;covid/src/main/mule/covid.xml&apos; to &apos;create-covid.xml&apos;" description="Rename resource &apos;covid.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/mule/covid.xml" name="create-covid.xml" stamp="1706906814447" updateReferences="true"/>
+</session>

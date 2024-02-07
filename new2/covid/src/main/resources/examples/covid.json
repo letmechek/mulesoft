@@ -1,0 +1,18 @@
+{
+    "source": "hospital1",
+    "casetype": "positive",
+    "firstName": "John",
+    "lastName": "Nixon",
+    "phone": "546-524-3423",
+    "email": "john@gmail.com",
+    "dateOfBirth": "1989-04-26",
+    "nationalID": "209-49-6193",
+    "nationalIDType": "SSN",
+    "address": {
+        "street": "1600 West Mall St Blvd",
+        "city": "Washington",
+        "state": "DC",
+        "postal": "20500",
+        "country": "USA"
+    }
+}

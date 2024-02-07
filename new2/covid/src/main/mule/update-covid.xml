@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="update-covidFlow" doc:id="eef090be-c661-4a42-a728-92a9aeb4cb65" >
+		<http:listener doc:name="Listener" doc:id="0193bbcc-d922-4edf-bd8b-ec3c80ed4cf6" config-ref="HTTP_Listener_config" path="v1/cases" allowedMethods="PUT"/>
+		<ee:transform doc:name="Transform Message" doc:id="deb8a47c-f590-4932-a562-30f0335d19d9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="68f832a6-ed30-46cf-9686-e038b4be893c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:update doc:name="Update" doc:id="bd64931f-1851-4c60-b243-a6596ba385d9" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE CVD_CASE_MASTER SET SOURCE=:SOURCE, CASE_TYPE=:CASE_TYPE, FIRST_NAME=:FIRST_NAME, LAST_NAME=:LAST_NAME, PHONE=:PHONE, EMAIL=:EMAIL, DATE_OF_BIRTH=:DATE_OF_BIRTH, NATIONAL_ID=:NATIONAL_ID, NATIONAL_ID_TYPE=:NATIONAL_ID_TYPE, STREET_ADDRESS=:STREET_ADDRESS, CITY=:CITY, STATE=:STATE, POSTAL=:POSTAL, COUNTRY=:COUNTRY, CREATE_DATE=:CREATE_DATE, UPDATE_DATE=:UPDATE_DATE, CREATE_BY=:CREATE_BY, UPDATE_BY=:UPDATE_BY
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[vars.covidPayload]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="Transform Message" doc:id="db584c09-565e-4c6e-b159-07925ba5162e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+if(payload.affectedRows > 0){
+	caseID: vars.covidCasePayload.CASE_ID
+} else {}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

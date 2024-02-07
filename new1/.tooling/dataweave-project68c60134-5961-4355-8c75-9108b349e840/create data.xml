@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="01e5f5d2-3b96-4bd2-ade4-39e352f7d013" basePath="hello" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="aefb5f48-68ed-4e7b-92c4-9792a0775873" >
+		<db:my-sql-connection host="localhost" port="3306" user="anwar" password="Gang1017!" database="mulesoftproject" />
+	</db:config>
+	<flow name="create_dataFlow" doc:id="0d0deb72-2f2d-4f81-9e1a-a6d85943cbde" >
+		<http:listener doc:name="Listener" doc:id="e1625853-94bf-4dfc-ac27-7960808cf607" config-ref="HTTP_Listener_config" path="hello"/>
+		<db:insert doc:name="Insert" doc:id="2ab54b9f-d2e9-4acc-bf07-3760522789a4" config-ref="Database_Config">
+			<db:sql ><![CDATA[create table emp(emp_id number(10), emp_name varchar2(50), emp_status varchar2(10));
+select * from emp;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	'emp_id': payload.employeeId,
+	
+}]]]></db:input-parameters>
+		</db:insert>
+	</flow>
+</mule>

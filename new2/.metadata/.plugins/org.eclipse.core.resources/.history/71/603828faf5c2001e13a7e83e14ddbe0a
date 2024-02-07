@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<flow name="validation-demoFlow" doc:id="b280f9e3-bf65-487d-9bde-24df2ecb1dca" >
+		<http:listener doc:name="Listener" doc:id="55d9f9a7-16a6-4a3c-8b8f-c3d066de6a7a" config-ref="HTTP_Listener_config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a52d48b5-db5c-4d48-8ce0-e961421f6d70" />
+		<validation:is-not-null doc:name="Is not null" doc:id="13a9f0c9-fedd-45a8-a757-7da54fdc3847" />
+	</flow>
+</mule>

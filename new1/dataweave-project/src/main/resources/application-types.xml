@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="covid" format="json">
+      <types:shape format="weave" example="examples/emp-hr-employee.json"><![CDATA[%dw 2.0
+
+type covid = {|
+  empID: Number {"typeId": "int"}, 
+  empName: String, 
+  empAddress: {|
+    houseNumber: String, 
+    streetName: String, 
+    city: String, 
+    country: String
+  |}, 
+  empJoinDate: String
+|} {"example": "{\\\"empID\\\":898909,\\\"empName\\\":\\\"Mark\\\",\\\"empAddress\\\":{\\\"houseNumber\\\":\\\"2-1-8987-1\\\",\\\"streetName\\\":\\\"Central Avenue\\\",\\\"city\\\":\\\"New York\\\",\\\"country\\\":\\\"USA\\\"},\\\"empJoinDate\\\":\\\"2020-06-08 08:43:12\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="xmlemployee" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="covid-payload" format="json">
+      <types:shape format="weave" example="examples/covid.json"><![CDATA[%dw 2.0
+
+type covid_payload = {|
+  source: String, 
+  casetype: String, 
+  firstName: String, 
+  lastName: String, 
+  email: String, 
+  dateOfBirth: String, 
+  nationalID: String, 
+  nationalIDType: String, 
+  address: {|
+    street: String, 
+    city: String, 
+    state: String, 
+    postal: String, 
+    country: String
+  |}
+|} {"example": "{\\\"source\\\":\\\"hospital1\\\",\\\"casetype\\\":\\\"positive\\\",\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Nixon\\\",\\\"email\\\":\\\"john@gmail.com\\\",\\\"dateOfBirth\\\":\\\"1989-04-26\\\",\\\"nationalID\\\":\\\"209-49-6193\\\",\\\"nationalIDType\\\":\\\"SSN\\\",\\\"address\\\":{\\\"street\\\":\\\"1600 West Mall St Blvd\\\",\\\"city\\\":\\\"Washington\\\",\\\"state\\\":\\\"DC\\\",\\\"postal\\\":\\\"20500\\\",\\\"country\\\":\\\"USA\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#f49d61a6-618c-4025-9bc8-b15bfc7acfea">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="covid"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8d6b96ae-0c10-4992-b09d-b618fa232e5c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="covid-payload"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

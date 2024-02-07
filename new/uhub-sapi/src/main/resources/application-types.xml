@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="register-covid" format="json">
+      <types:shape format="weave" example="examples/mule-artifact.json"><![CDATA[%dw 2.0
+
+type register_covid = {| minMuleVersion: String |} {"example": "{\\\"minMuleVersion\\\":\\\"4.5.0\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="xml" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#ea13f02c-11c2-46f2-8d0d-d0bb669827b0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="register-covid"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="xml"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

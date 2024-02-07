@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="01e5f5d2-3b96-4bd2-ade4-39e352f7d013" basePath="covid" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="aefb5f48-68ed-4e7b-92c4-9792a0775873" >
+		<db:my-sql-connection host="localhost" port="3306" user="anwar" password="Gang1017!" database="mulesoftproject" />
+	</db:config>
+	<flow name="create_dataFlow" doc:id="0d0deb72-2f2d-4f81-9e1a-a6d85943cbde" >
+		<http:listener doc:name="Listener" doc:id="e1625853-94bf-4dfc-ac27-7960808cf607" config-ref="HTTP_Listener_config" path="v1/cases" allowedMethods="PUT">
+			<http:response statusCode="#[vars.statusMessage]" reasonPhrase="#[vars.statusResponse]"/>
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="9a27f294-1766-4c2f-acb6-71904fe376cb" />
+		<db:insert doc:name="Insert" doc:id="02d97b55-8f0f-407c-83ad-4d8c3a016d9e" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO CVD_CASE_MASTER (SOURCE, CASE_TYPE, FIRST_NAME, LAST_NAME, PHONE, DATE_OF_BIRTH, NATIONAL_ID, NATIONAL_ID_TYPE, STREET_ADDRESS, CITY, STATE, POSTAL, COUNTRY, CREATE_DATE, UPDATE_DATE, CREATE_BY, UPDATE_BY)
+    VALUES (:Source, :Case_Type, :First_name, :Last_name, :Phone, :Date_of_birth, :National_id, :National_id_type, :Street_address, :City, :State, :Postal, :Country, STR_TO_DATE(:Create_date, '%Y-%m-%d'), STR_TO_DATE(:Update_date, '%Y-%m-%d'), :Create_by, :Update_by);
+]]></db:sql>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="857f9a23-a4f0-4724-8996-1e215418eddc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="statusResponse" ><![CDATA['success']]></ee:set-variable>
+				<ee:set-variable variableName="statusMessage" ><![CDATA['ok']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:stored-procedure doc:name="Stored procedure" doc:id="0cac2a8f-791e-423e-8edb-ed84432db93c" />
+	</flow>
+</mule>

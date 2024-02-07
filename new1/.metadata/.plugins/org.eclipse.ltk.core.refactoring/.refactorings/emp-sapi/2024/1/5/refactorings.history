@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;emp-sapi/src/main/mule/emp-sapi.xml&apos; to &apos;create-employee.xml&apos;" description="Rename resource &apos;emp-sapi.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/mule/emp-sapi.xml" name="create-employee.xml" stamp="1706649534138" updateReferences="true"/>
+</session>
